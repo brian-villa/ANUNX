@@ -102,6 +102,12 @@ const Publish = () => {
 
         }
     })
+
+    const handleRemoveFile = fileName => {
+        const newFileState = files.filter(file => file.name !== fileName)
+        setFiles(newFileState)
+    }   
+    
     
     return (
         <TemplateDefault>
@@ -192,7 +198,7 @@ const Publish = () => {
                                     }
                                     
                                     <Box className={classes.mask}>
-                                        <IconButton color="secondary">
+                                        <IconButton color="secondary" onClick={() => handleRemoveFile(file.name)}>
                                             <DeleteForever fontSize="large" />
                                         </IconButton>
                                     </Box>
