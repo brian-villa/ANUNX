@@ -2,10 +2,15 @@ import {
     Box, 
     Button, 
     Container, 
-    IconButton, 
+    FormControl, 
+    IconButton,
+    InputLabel,
+    InputAdornment,
+    OutlinedInput, 
     Select, 
     TextField, 
-    Typography 
+    Typography,
+    Input, 
 } from "@material-ui/core"
 
 import { useState } from "react"
@@ -15,7 +20,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import { DeleteForever } from "@material-ui/icons"
 import TemplateDefault from "../../src/templates/Default"
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme, className, ...props) => ({
     mask: {},
     mainImage: {},
 
@@ -82,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Publish = () => {
+const Publish = ({ props }) => {
     const classes = useStyles()
     const [files, setFiles] = useState([])
 
@@ -225,6 +230,24 @@ const Publish = () => {
                         fullWidth
                     />
                 </Box>
+            </Container>
+            <Container maxWidth="md"className={classes.boxContainer}>
+                <Box className={classes.box}>
+                    <Typography component="h6" variant="h6" color="textPrimary">
+                        Preço
+                    </Typography>
+                    <br />
+                    <FormControl variant="outlined" fullWidth>
+                        <InputLabel>Valor</InputLabel>
+                        <OutlinedInput
+                            labelWidth={40}
+                            onChange={() => {}}
+                            startAdornment={<InputAdornment position="start">R$</InputAdornment>}
+                        />
+                    </FormControl>
+
+                </Box>
+
             </Container>
             <Container maxWidth="md" className={classes.boxContainer}>
                 <Box className={classes.box}>
