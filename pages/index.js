@@ -1,4 +1,8 @@
 import { 
+<<<<<<< HEAD
+=======
+    Button, 
+>>>>>>> 8e02cfe08366f39f942f9e252f19a331a0355ddb
     Card, 
     CardMedia, 
     CardContent, 
@@ -9,7 +13,10 @@ import {
     Paper, 
     Typography 
 } from "@material-ui/core"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8e02cfe08366f39f942f9e252f19a331a0355ddb
 import SearchIcon from "@material-ui/icons/Search"
 import { makeStyles } from "@material-ui/core"
 
@@ -40,7 +47,10 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
 
     const classes = useStyles()
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8e02cfe08366f39f942f9e252f19a331a0355ddb
     return (
         <TemplateDefault>
             <Container maxWidth="md" className={classes.searchContainer}>
@@ -57,11 +67,19 @@ const Home = () => {
                     </IconButton>
                 </Paper>
             </Container>
+<<<<<<< HEAD
             <Container maxWidth="lg" className={classes.cardGrid}>
+=======
+            <Container maxWidth="md" className={classes.cardGrid}>
+>>>>>>> 8e02cfe08366f39f942f9e252f19a331a0355ddb
                 <Typography component="h2" variant="h4" align="center" color="textPrimary">
                     Destaques
                 </Typography>
                 <br />
+<<<<<<< HEAD
+=======
+                
+>>>>>>> 8e02cfe08366f39f942f9e252f19a331a0355ddb
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6} md={4}>
                         <Card>
