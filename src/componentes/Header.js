@@ -37,7 +37,9 @@ const useStyles = makeStyles((theme) =>({
     }
 }))
 
-export default function ButtonAppBar() {
+
+
+const ButtonAppBar = () => {
   const classes = useStyles()
   const [anchorUserMenu, setAnchorUserMenu] = useState(false)
 
@@ -91,3 +93,5 @@ export default function ButtonAppBar() {
     </>
   )
 }
+
+export default ButtonAppBar
