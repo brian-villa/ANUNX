@@ -10,6 +10,7 @@ import {
     Typography,
 } from "@material-ui/core"
 
+import Carousel from "react-material-ui-carousel"
 import { makeStyles } from "@material-ui/core"
 import TemplateDefault from "../src/templates/Default"
 
@@ -26,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: "bold",
         marginBottom: 15,
     },
+    card: {
+        height: "100%",
+    },
+    cardMedia: {
+        paddingTop: "56%",
+    },
 }))
 
 const Product = () => {
@@ -36,7 +43,31 @@ const Product = () => {
                 <Grid container spacing={3}>
                     <Grid item xs={8}>
                         <Box className={classes.box}>
-                            Carrossel
+                            <Carousel
+                                autoPlay={false}
+                                animation="slide"
+                                navButtonsProps={{
+                                    style: {
+                                        color: "black",
+                                        background: "white",
+                                    },
+                                }}
+                            >
+                                <Card className={classes.card}>
+                                    <CardMedia
+                                        className={classes.cardMedia} 
+                                        image="https://source.unsplash.com/random?a=1"
+                                        title="Título da Imagem"
+                                        />
+                                </Card>
+                                <Card className={classes.card}>
+                                    <CardMedia
+                                        className={classes.cardMedia} 
+                                        image="https://source.unsplash.com/random?a=2"
+                                        title="Título da Imagem"
+                                        />
+                                </Card>
+                            </Carousel>
                         </Box>
 
                         <Box className={classes.box} textAlign="left">
