@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles"
+import { Block } from "@material-ui/icons"
 
 const useStyles = makeStyles((theme) => ({
     mask: {},
@@ -17,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
+    },
+    loading: {
+        display: "block",
+        margin: "10px auto",
     },
 }))
 
