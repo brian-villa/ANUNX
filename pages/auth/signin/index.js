@@ -1,6 +1,7 @@
 import { Formik } from "formik"
 import axios from "axios"
 import { useRouter } from "next/router"
+import { signIn, useSession } from "next-auth/client"
 
 import { 
     Box,
@@ -13,23 +14,31 @@ import {
     InputLabel, 
     Typography,
 } from "@material-ui/core"
+import { Alert } from "@material-ui/lab"
 
 
 import TemplateDefault from "../../../src/templates/Default"
 import useToasty from "../../../src/contexts/Toasty"
-import useStyles from "./styles"
+import useStyles from "../signin/styles"
 
 
-import { initialValues, validationSchema } from "./formValues"
+import { initialValues, validationSchema } from "../signin/formValues"
 
 
 const Signin = () => {
     const classes = useStyles()
     const { setToasty } =  useToasty()
     const router = useRouter()
+    const [ session ] = useSession()
 
-    const handleFormSubmit = async values => {
-        
+    console.log(session)
+
+    const handleFormSubmit = async (values) => {
+        signIn('credentials', {
+            email: values.email,
+            password: values.password,
+            callbackUrl: "http://localhost:3000/user/dashboard"
+        })
     }
     
     return(
@@ -61,6 +70,11 @@ const Signin = () => {
                             <form onSubmit={handleSubmit}>
                                 <Container maxWidth="md" className={classes.boxContainer}>
                                     <Box className={classes.box}>
+                                        {
+                                            router.query.i === "1"
+                                                ? <Alert severity="error" className={classes.errorMessage}></Alert>
+                                                : null
+                                        }
                                         <FormControl error={errors.email && touched.email} fullWidth>
                                             <InputLabel className={classes.inputLabel}>E-mail</InputLabel>
                                             

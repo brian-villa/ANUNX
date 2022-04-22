@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useSession } from "next-auth/client"
 import { useState } from 'react'
 import Link from 'next/link'
 
@@ -42,6 +43,7 @@ const useStyles = makeStyles((theme) =>({
 const ButtonAppBar = () => {
   const classes = useStyles()
   const [anchorUserMenu, setAnchorUserMenu] = useState(false)
+  const [ session ] = useSession()
 
   const openUserMenu = Boolean(anchorUserMenu)
 
@@ -53,21 +55,26 @@ const ButtonAppBar = () => {
             <Typography variant="h6" component="div" className={classes.title}>
               Anunx
             </Typography>
-            <Link href="/user/publish" passHref>
+            <Link href={session ? '/user/publish' : '/auth/singin'} passHref>
               <Button color="inherit" variant ="outlined">
                 Anunciar e Vender
               </Button>
             </Link>
-            <IconButton color="secondary" onClick={(e) => setAnchorUserMenu(e.currentTarget)}>
-              {
-                true === false 
-                ? <Avatar src="" />
-                : <AccountCircle />
-              }
-              <Typography variant="subtitle2" color="secondary" className={classes.userName}>
-                Brian Villanova
-              </Typography>
-            </IconButton>
+            {
+              session
+                ? (
+                  <IconButton color="secondary" onClick={(e) => setAnchorUserMenu(e.currentTarget)}>
+                    {
+                      session.user.image 
+                      ? <Avatar src={session.user.image} />
+                      : <AccountCircle />
+                    }
+                    <Typography variant="subtitle2" color="secondary" className={classes.userName}>
+                      {session.user.name}
+                    </Typography>
+                  </IconButton>
+                ) : null
+            }
             <Menu
               anchorEl={anchorUserMenu}
               open={openUserMenu}
