@@ -89,7 +89,7 @@ const Signin = () => {
                                                         alt="Login com o Google"
                                                     /> 
                                                 }
-                                                onClick={handleGoogleLogin()}
+                                                onClick={() => handleGoogleLogin()}
                                             >
                                                 Entrar com Google
                                             </Button>
