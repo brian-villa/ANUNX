@@ -2,6 +2,7 @@ import { Formik } from "formik"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { signIn, useSession } from "next-auth/client"
+import { GetServerSideProps } from "next"
 
 import { 
     Box,
@@ -25,7 +26,7 @@ import useStyles from "../signin/styles"
 import { initialValues, validationSchema } from "../signin/formValues"
 
 
-const Signin = () => {
+const Signin = ({ APP_URL }) => {
     const classes = useStyles()
     const { setToasty } =  useToasty()
     const router = useRouter()
@@ -37,13 +38,13 @@ const Signin = () => {
         signIn('credentials', {
             email: values.email,
             password: values.password,
-            callbackUrl: "http://localhost:3000/user/dashboard"
+            callbackUrl: `${APP_URL}/user/dashboard`
         })
     }
 
     const handleGoogleLogin = () => {
         signIn("google", {
-            callbackUrl: "http://localhost:3000/user/dashboard"
+            callbackUrl: `${APP_URL}/user/dashboard`
         })
     }
     
@@ -169,3 +170,12 @@ const Signin = () => {
 }
 
 export default Signin
+
+export const getServerSideProps = async () => {
+    return {
+        props: {
+            APP_URL: process.env.APP_URL,
+        },
+    }
+    
+}
