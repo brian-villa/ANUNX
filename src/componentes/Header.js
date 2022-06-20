@@ -3,6 +3,8 @@ import { useSession } from "next-auth/client"
 import { useState } from 'react'
 import Link from 'next/link'
 
+import { signOut } from 'next-auth/client'
+
 import {
   Avatar,
   AppBar,
@@ -40,10 +42,11 @@ const useStyles = makeStyles((theme) =>({
 
 
 
-const ButtonAppBar = () => {
+const ButtonAppBar = ({ APP_URL }) => {
   const classes = useStyles()
   const [anchorUserMenu, setAnchorUserMenu] = useState(false)
   const [ session ] = useSession()
+
 
   const openUserMenu = Boolean(anchorUserMenu)
 
@@ -91,7 +94,12 @@ const ButtonAppBar = () => {
                 <MenuItem>Publicar novo anúncio</MenuItem>
               </Link>
               <Divider className={classes.divider} />
-              <MenuItem>Sair</MenuItem>
+              <MenuItem 
+                onClick={() => signOut()}
+              >
+                Sair
+              
+              </MenuItem>
             </Menu>
               
           </Toolbar>
