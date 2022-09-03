@@ -16,14 +16,54 @@ import { Formik } from "formik"
 
 import TemplateDefault from "../../../src/templates/Default"
 import { initialValues, validationSchema } from "./formValues"
+import useToasty from "../../../src/contexts/Toasty"
 import FileUpload from "../../../src/componentes/FileUpload"
 
 import useStyles from "./styles"
+import axios from "axios"
+import { useRouter } from "next/router"
 
 const Publish = () => {
-    
     const classes = useStyles()
  
+    const handleFormSubmit = (values) => {
+        const formData = new FormData()
+        const { setToasty } = useToasty
+        const router = useRouter
+
+        const handleSuccess = () => {
+            setToasty({
+                open: true,
+                text: "Anúncio cadastrado com sucesso",
+                severity: "success",
+            })
+
+            //router.push("/user/dashboard")
+        }
+
+        const handleError = () => {
+            setToasty({
+                open: true,
+                text: "Ops, ocorreu um erro, tente novamente.",
+                severity: "success",
+            })
+        }
+
+        for (let field in values) {
+            if (field ==="files") {
+                values.files.forEach(file => {
+                    formData.append("files", file)
+                })
+            } else {
+                formData.append(field, values[field])
+            }
+        }
+
+        axios.post('/api/products', formData)
+            .then(handleSuccess)
+            .catch(handleError)
+    }
+
     return (
         <TemplateDefault>
             <Container maxWidth="sm">
@@ -40,9 +80,7 @@ const Publish = () => {
         <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values) => {
-                console.log("ok", values)
-            }}
+            onSubmit={handleFormSubmit}
         >
             {
                 ({
