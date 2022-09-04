@@ -9,7 +9,8 @@ import {
     Typography,
     Input,
     MenuItem,
-    FormHelperText, 
+    FormHelperText,
+    CircularProgress, 
 } from "@material-ui/core"
 
 import { Formik } from "formik"
@@ -22,35 +23,46 @@ import FileUpload from "../../../src/componentes/FileUpload"
 import useStyles from "./styles"
 import axios from "axios"
 import { useRouter } from "next/router"
+import { getSession } from "next-auth/client"
 
-const Publish = () => {
+
+
+const Publish = ({ userId, image }) => {
     const classes = useStyles()
- 
+    const { setToasty } = useToasty()
+    const router = useRouter()
+    
+    const formValues = {
+        ...initialValues
+    }
+    
+    formValues.userId = userId
+    formValues.image = image
+
+    const handleSuccess = () => {
+        setToasty({
+            open: true,
+            text: "Anúncio cadastrado com sucesso",
+            severity: "success",
+        })
+
+        router.push("/user/dashboard")
+    }
+
+    const handleError = () => {
+        setToasty({
+            open: true,
+            text: "Ops, ocorreu um erro, tente novamente.",
+            severity: "success",
+        })
+    }
+    
     const handleFormSubmit = (values) => {
         const formData = new FormData()
-        const { setToasty } = useToasty
-        const router = useRouter
-
-        const handleSuccess = () => {
-            setToasty({
-                open: true,
-                text: "Anúncio cadastrado com sucesso",
-                severity: "success",
-            })
-
-            //router.push("/user/dashboard")
-        }
-
-        const handleError = () => {
-            setToasty({
-                open: true,
-                text: "Ops, ocorreu um erro, tente novamente.",
-                severity: "success",
-            })
-        }
+    
 
         for (let field in values) {
-            if (field ==="files") {
+            if (field === "files") {
                 values.files.forEach(file => {
                     formData.append("files", file)
                 })
@@ -78,7 +90,7 @@ const Publish = () => {
             <br /> <br />
 
         <Formik
-            initialValues={initialValues}
+            initialValues={formValues}
             validationSchema={validationSchema}
             onSubmit={handleFormSubmit}
         >
@@ -90,12 +102,16 @@ const Publish = () => {
                     handleChange,
                     handleSubmit,
                     setFieldValue,
+                    isSubmitting,
 
                 }) => {
                       
 
                     return(
                         <form onSubmit={handleSubmit}>
+                            <Input type="hidden" name="userId" value={values.userId} />
+                            <Input type="hidden" name="image" value={values.image} />
+
                             <Container maxWidth="md" className={classes.boxContainer}>
                                 <Box className={classes.box}>   
                                     <FormControl error={errors.title && touched.title} fullWidth>
@@ -244,9 +260,22 @@ const Publish = () => {
 
                             <Container maxWidth="md" className={classes.boxContainer}>
                                 <Box textAlign="right">
-                                    <Button type="submit" variant="contained" color="primary">
-                                        Publicar Anúncio
-                                    </Button>
+                                    {
+                                        isSubmitting
+                                            ? (
+                                                <CircularProgress className={classes.loading} /> 
+                                            )
+                                            
+                                            : (
+                                                <Button 
+                                                    type="submit" 
+                                                    variant="contained" 
+                                                    color="primary"
+                                                >
+                                                    Publicar anúncio
+                                                </Button>
+                                            )
+                                    }
                                 </Box>
                             </Container>   
                         </form>
@@ -260,5 +289,17 @@ const Publish = () => {
 }
 
 Publish.requireAuth = true
+
+export async function getServerSideProps({ req }) {
+    const { userId, user} = await getSession({ req })
+    
+    return {
+        props: {
+            userId,
+            image: user.image,
+        }
+    }
+}
+
 
 export default Publish
