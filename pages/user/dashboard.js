@@ -14,6 +14,8 @@ import { makeStyles } from "@material-ui/core/styles"
 import TemplateDefault from "../../src/templates/Default"
 import Card from "../../src/componentes/Card"
 
+import { formatCurrency } from "../../src/utils/currency"
+
 const useStyles = makeStyles((theme) => ({
   buttonAdd: {
     margin: "30px auto",
@@ -47,7 +49,7 @@ const Home = ({ products }) => {
                 <Card
                   image={`/uploads/${product.files[0].name}`}
                   title={product.title}
-                  subtitle={product.price}
+                  subtitle={formatCurrency(product.price)}
                   actions={
                     <>
                       <Button size="small" color="primary">
