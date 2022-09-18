@@ -39,6 +39,7 @@ const Publish = ({ userId, image }) => {
     formValues.userId = userId
     formValues.image = image
 
+
     const handleSuccess = () => {
         setToasty({
             open: true,
@@ -76,6 +77,7 @@ const Publish = ({ userId, image }) => {
             .catch(handleError)
     }
 
+
     return (
         <TemplateDefault>
             <Container maxWidth="sm">
@@ -111,6 +113,7 @@ const Publish = ({ userId, image }) => {
                         <form onSubmit={handleSubmit}>
                             <Input type="hidden" name="userId" value={values.userId} />
                             <Input type="hidden" name="image" value={values.image} />
+                            <Input type="hidden" name="date" value={values.date} />
 
                             <Container maxWidth="md" className={classes.boxContainer}>
                                 <Box className={classes.box}>   
@@ -255,6 +258,22 @@ const Publish = ({ userId, image }) => {
                                             { errors.phone&& touched.phone? errors.phone: null}
                                         </FormHelperText>
                                     </FormControl>
+
+                                    <br /> <br />
+
+                                    <FormControl error={errors.city && touched.city} fullWidth>
+                                        <InputLabel className={classes.inputLabel}>Cidade</InputLabel>
+                                        
+                                        <Input 
+                                            name="city" 
+                                            value={values.city}
+                                            onChange={handleChange}   
+                                        />
+
+                                        <FormHelperText>
+                                            { errors.city && touched.city ? errors.city: null}
+                                        </FormHelperText>
+                                    </FormControl>
                                 </Box>
                             </Container>
 
@@ -291,8 +310,10 @@ const Publish = ({ userId, image }) => {
 Publish.requireAuth = true
 
 export async function getServerSideProps({ req }) {
-    const { userId, user} = await getSession({ req })
     
+    const { userId, user} = await getSession({ req })
+
+
     return {
         props: {
             userId,

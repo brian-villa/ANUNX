@@ -22,11 +22,15 @@ const schema = new mongoose.Schema({
         type: Number,
         required: [true, "O campo 'preço' é obrigatório."],
     },
+    date: {
+        type: String,
+    },
     user:{
         id: String,
         name: String,
         email: String,
         phone: String,
+        city: String,
         image: String,
     },
     files: {

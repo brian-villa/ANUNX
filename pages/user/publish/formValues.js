@@ -1,5 +1,12 @@
 import * as yup from "yup"
 
+const dateToday = () => {
+    const date = Date.now()
+    const today = new Date(date)
+
+    return today.toLocaleDateString()
+}
+
 const initialValues = {
     title: "",
     category: "",
@@ -8,6 +15,8 @@ const initialValues = {
     email: "",
     name: "",
     phone: "",
+    city: "",
+    date: dateToday(),
     files: [],
 }
 
@@ -27,7 +36,8 @@ const validationSchema = yup.object().shape({
     email: yup.string().email("Digite um email válido").required("Campo obrigatório"),
     name: yup.string().required("Campo obrigatório"),
     phone: yup.number().required("Campo obrigatório"),
-    files: yup.array().min(1, "Envie pelo menos uma foto").required("Campo obrigatório")
+    city: yup.string().required("Campo obrigatório"),
+    files: yup.array().min(1, "Envie pelo menos uma foto").required("Campo obrigatório"),
 })
 
 export {

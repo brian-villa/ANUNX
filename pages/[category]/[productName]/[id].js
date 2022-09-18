@@ -10,9 +10,13 @@ import {
     Typography,
 } from "@material-ui/core"
 
+import dbConnect from "../../../src/utils/dbConnect"
+import ProductsModel from "../../../src/models/products"
+import { formatCurrency } from "../../../src/utils/currency"
+
 import Carousel from "react-material-ui-carousel"
 import { makeStyles } from "@material-ui/core"
-import TemplateDefault from "../../src/templates/Default"
+import TemplateDefault from "../../../src/templates/Default" 
 
 const useStyles = makeStyles((theme) => ({
     box: {
@@ -35,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const Product = () => {
+const Product = ({ product }) => {
     const classes = useStyles()
     return(
         <TemplateDefault>
@@ -53,20 +57,18 @@ const Product = () => {
                                     },
                                 }}
                             >
-                                <Card className={classes.card}>
-                                    <CardMedia
-                                        className={classes.cardMedia} 
-                                        image="https://source.unsplash.com/random?a=1"
-                                        title="Título da Imagem"
-                                        />
-                                </Card>
-                                <Card className={classes.card}>
-                                    <CardMedia
-                                        className={classes.cardMedia} 
-                                        image="https://source.unsplash.com/random?a=2"
-                                        title="Título da Imagem"
-                                        />
-                                </Card>
+                                {
+                                    product.files.map(file => (
+                                        <Card key={file.name} className={classes.card}>
+                                            <CardMedia
+                                                className={classes.cardMedia} 
+                                                image={`/uploads/${file.name}`}
+                                                title={product.title}
+                                            />
+                                        </Card>
+                                    ))
+                                }
+
                             </Carousel>
                         </Box>
 
@@ -74,29 +76,29 @@ const Product = () => {
                             <Typography 
                                 component="span" variant="caption"
                             >
-                                Publicado 16 junho de 2021
+                                Publicado em {product.date}
                             </Typography>
                             <Typography 
                                 component="h4" 
                                 variant="h4" 
                                 className={classes.productName}
                             >
-                                Jaguar XE 2.0 D R-Sport Aut.
+                                {product.title}
                             </Typography>
                             <Typography 
                                 component="h4" variant="h4" 
                                 className={classes.price}
                             >
-                                R$50.000,00
+                                {formatCurrency(product.price)}
                             </Typography>
 
-                            <Chip label="Categoria" />
+                            <Chip label={product.category} />
                         </Box>
 
                         <Box className={classes.box} textAlign="left">
                             <Typography component="h6" variant="h6">Descrição</Typography>
                             <Typography component="p" variant="body2">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis, quas error repellat saepe vel adipisci temporibus molestiae, mollitia delectus autem, amet alias. Nemo ipsa enim molestiae ut vel explicabo excepturi. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis, quas error repellat saepe vel adipisci temporibus molestiae, mollitia delectus autem, amet alias. Nemo ipsa enim molestiae ut vel explicabo excepturi.
+                                {product.description}
                             </Typography>
                         </Box>
                     </Grid>
@@ -104,20 +106,22 @@ const Product = () => {
                         <Card elevation={0} className={classes.box}>
                             <CardHeader 
                                 avatar={
-                                    <Avatar>B</Avatar>
+                                    <Avatar src={product.user.image}>
+                                        {product.user.image || product.user.name[0]}
+                                    </Avatar>
                                 }
-                                title="Brian Villanova"
-                                subheader="email@email.com"
+                                title={product.user.name}
+                                subheader={product.user.email}
                             />
                             <CardMedia 
-                                image="https://source.unsplash.com/random"
-                                title="Brian Villanova"
+                                image={product.user.image}
+                                title={product.user.name}
                             />
                         </Card>
 
                         <Box className={classes.box}>
                             <Typography component="h6" variant="h6">
-                                Localização
+                                {product.user.city}
                             </Typography>
                         </Box>
                     </Grid>
@@ -125,6 +129,20 @@ const Product = () => {
             </Container>
         </TemplateDefault>
     )
+}
+
+export async function getServerSideProps({ query }) {
+    const { id } = query
+
+    await dbConnect()
+
+    const product = await ProductsModel.findOne({ _id: id })
+
+    return {
+        props: {
+            product: JSON.parse(JSON.stringify(product))
+        }
+    }
 }
 
 export default Product
