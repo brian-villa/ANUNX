@@ -1,3 +1,6 @@
+import Link from "next/link"
+import slugify from "slugify"
+
 import { 
   Button, 
   Container, 
@@ -10,7 +13,6 @@ import {
   DialogActions,
 } from "@material-ui/core"
 
-import Link from "next/link"
 
 
 import { useState } from "react"
@@ -36,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
   div1: {
     textAlign: "center",
+  },
+  productLink: {
+    textDecoration: "none !important",
   },
 }))
 
@@ -81,10 +86,6 @@ const Home = ({ products }) => {
       text: "Ops, ocorreu um erro!"
     })
   }
-
-
-
-
 
   return (
     <TemplateDefault>
@@ -135,24 +136,31 @@ const Home = ({ products }) => {
               
               if (removedProducts.includes(product._id)) return null 
 
+              const category = slugify(product.category).toLocaleLowerCase()
+              const title = slugify(product.title).toLocaleLowerCase()
+              
               return (
               
                 <Grid item xs={12} sm={6} md={4} key={product._id}>
-                  <Card
-                    image={`/uploads/${product.files[0].name}`}
-                    title={product.title}
-                    subtitle={formatCurrency(product.price)}
-                    actions={
-                      <>
-                        <Button size="small" color="primary">
-                          Editar
-                        </Button>
-                        <Button onClick={() => handleClickRemove(product._id)}size="small" color="primary">
-                          Remover
-                        </Button>
-                      </>
-                    }
-                  />
+                  <Link href={`/${category}/${title}/${product._id}`} passHref>
+                    <a className={classes.productLink}>
+                      <Card
+                        image={`/uploads/${product.files[0].name}`}
+                        title={product.title}
+                        subtitle={formatCurrency(product.price)}
+                        actions={
+                          <>
+                            <Button size="small" color="primary">
+                              Editar
+                            </Button>
+                            <Button onClick={() => handleClickRemove(product._id)}size="small" color="primary">
+                              Remover
+                            </Button>
+                          </>
+                        }
+                      />
+                    </a>
+                  </Link>
                 </Grid>
               )
             })
