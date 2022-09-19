@@ -31,13 +31,14 @@ const useStyles = makeStyles((theme) =>({
     },
     title: {
         flexGrow: 1,
+        cursor: "pointer",
     },
     userName: {
       marginLeft: 6,
     },
     divider: {
       margin: "8px 0",
-    }
+    },
 }))
 
 
@@ -55,9 +56,11 @@ const ButtonAppBar = ({ APP_URL }) => {
       <AppBar position="static" elevation={3}>
         <Container maxWidth="lg">
           <Toolbar>
-            <Typography variant="h6" component="div" className={classes.title}>
-              Anunx
-            </Typography>
+            <Link href={`http://localhost:3000/`} passHref>
+                <Typography variant="h6" component="div" className={classes.title}>
+                  Anunx
+                </Typography>
+            </Link>
             <Link href={session ? '/user/publish' : '/auth/singin'} passHref>
               <Button color="inherit" variant ="outlined">
                 Anunciar e Vender
